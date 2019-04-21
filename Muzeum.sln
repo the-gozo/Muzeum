@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Muzeum", "Muzeum\Muzeum.csproj", "{3ED92B2E-5151-4A5C-AB17-42DA57D297B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Muzeum.UzletiLogika", "Muzeum.UzletiLogika\Muzeum.UzletiLogika.csproj", "{CEED0958-DB21-40A8-9A33-5CA46CB0175A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3ED92B2E-5151-4A5C-AB17-42DA57D297B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ED92B2E-5151-4A5C-AB17-42DA57D297B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ED92B2E-5151-4A5C-AB17-42DA57D297B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ED92B2E-5151-4A5C-AB17-42DA57D297B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEED0958-DB21-40A8-9A33-5CA46CB0175A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEED0958-DB21-40A8-9A33-5CA46CB0175A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEED0958-DB21-40A8-9A33-5CA46CB0175A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEED0958-DB21-40A8-9A33-5CA46CB0175A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0033DC3F-0CBE-4EDE-A2D9-661E079DBA7B}
+	EndGlobalSection
+EndGlobal
