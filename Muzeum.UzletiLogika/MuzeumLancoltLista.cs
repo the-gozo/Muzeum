@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,49 +7,34 @@ using System.Threading.Tasks;
 
 namespace Muzeum.UzletiLogika
 {
-    class MuzeumLancoltLista
+    public class MuzeumLancoltLista
     {
-        MuzeumLancoltListaElem _fej;
+        public MuzeumLancoltListaElem Fej { get; }
 
         public MuzeumLancoltLista()
         {
-            _fej = null;
+            Fej = new MuzeumLancoltListaElem();
         }
 
         public void BeszurasElejere(IMuzeum muzeum)
         {
-            MuzeumLancoltListaElem uj = new MuzeumLancoltListaElem(muzeum, _fej, _fej.Kovetkezo);
+            MuzeumLancoltListaElem uj = new MuzeumLancoltListaElem(muzeum, Fej.Kovetkezo, null);
+           
+            if (Fej.Kovetkezo != null) Fej.Kovetkezo.Elozo = uj;
+            
+            Fej.Kovetkezo = uj;
         }
+
         public void BeszurasVegere(IMuzeum muzeum)
         {
-            MuzeumLancoltListaElem p = _fej;
+            MuzeumLancoltListaElem p = Fej;
 
             while (p.Kovetkezo != null)
             {
                 p = p.Kovetkezo;
             }
 
-            p.Kovetkezo = new MuzeumLancoltListaElem(muzeum, p, null);
+            p.Kovetkezo = new MuzeumLancoltListaElem(muzeum, null, p);
         }
     }
-
-    public class MuzeumLancoltListaElem
-    {
-        public IMuzeum Muzeum { get; set; }
-        public MuzeumLancoltListaElem Elozo { get; set; }
-        public MuzeumLancoltListaElem Kovetkezo { get; set; }
-
-        public MuzeumLancoltListaElem()
-        {
-        }
-
-        public MuzeumLancoltListaElem(IMuzeum muzeum, MuzeumLancoltListaElem elozo, MuzeumLancoltListaElem kovezkezo)
-        {
-            Muzeum = muzeum;
-            Elozo = elozo;
-            Kovetkezo = kovezkezo;
-        }
-        
-    }
-
 }

@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Muzeum.UzletiLogika\Muzeum.UzletiLogika.csproj">
+      <Project>{CEED0958-DB21-40A8-9A33-5CA46CB0175A}</Project>
+      <Name>Muzeum.UzletiLogika</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -45,6 +45,11 @@
     <Compile Include="IMuzeum.cs" />
     <Compile Include="Muzeum.cs" />
     <Compile Include="MuzeumLancoltLista.cs" />
+    <Compile Include="MuzeumLancoltListaElem.cs" />
+    <Compile Include="Muzeumok\HadtortenetiMuzeum.cs" />
+    <Compile Include="Muzeumok\IparmuveszetiMuzeum.cs" />
+    <Compile Include="Muzeumok\NeprajziMuzeum.cs" />
+    <Compile Include="Muzeumok\SzepmuveszetiMuzeum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
