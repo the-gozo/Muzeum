@@ -8,7 +8,7 @@ namespace Muzeum.UzletiLogika.Muzeumok
 {
    public  class IparmuveszetiMuzeum: Muzeum
     {
-        public IparmuveszetiMuzeum(string nev) : base(nev)
+        public IparmuveszetiMuzeum() : base("Iparművészeti műzeum")
         {
         }
     }

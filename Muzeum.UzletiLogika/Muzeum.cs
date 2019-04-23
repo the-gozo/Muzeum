@@ -26,6 +26,8 @@ namespace Muzeum.UzletiLogika
 
         public IMuzeum[] HasonloMuzeumok()
         {
+       
+
             throw new NotImplementedException();
         }
 

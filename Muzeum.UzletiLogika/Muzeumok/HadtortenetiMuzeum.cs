@@ -8,7 +8,7 @@ namespace Muzeum.UzletiLogika.Muzeumok
 {
    public class HadtortenetiMuzeum : Muzeum
     {
-        public HadtortenetiMuzeum(string nev) : base(nev)
+        public HadtortenetiMuzeum() : base("Hadtörténeti múzeum")
         {
         }
     }
