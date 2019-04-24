@@ -10,11 +10,13 @@ namespace Muzeum.UzletiLogika
     {
         public List<Csucs> Csucsok { get; set; }
         public List<El> Elek { get; set; }
+        public MuzeumLancoltLista NagyonJoMuzeumLancoltLista { get; set; }
 
         public Graf()
         {
             Csucsok = new List<Csucs>();
             Elek = new List<El>();
+            NagyonJoMuzeumLancoltLista = new MuzeumLancoltLista();
         }
 
         public bool VezetEl(Csucs hova)
@@ -33,6 +35,10 @@ namespace Muzeum.UzletiLogika
             if (csucs != null && !Csucsok.Contains(csucs))
             {
                 Csucsok.Add(csucs);
+                if (csucs.Muzeum.Erdekesseg == ErdekessegiSzint.NagyonJo)
+                {
+                    NagyonJoMuzeumLancoltLista.BeszurasElejere(csucs.Muzeum);
+                }
             }
             else
             {
@@ -46,6 +52,11 @@ namespace Muzeum.UzletiLogika
             {
                 Csucsok.Remove(csucs);
                 Elek.RemoveAll(el => el.Honnan == csucs || el.Hova == csucs);
+                if (csucs.Muzeum.Erdekesseg == ErdekessegiSzint.NagyonJo && NagyonJoMuzeumLancoltLista.Contains(csucs.Muzeum))
+                {
+                    NagyonJoMuzeumLancoltLista.Torles(csucs.Muzeum);
+                }
+                
             }
             else
             {
@@ -60,6 +71,11 @@ namespace Muzeum.UzletiLogika
     public class Csucs
     {
         public IMuzeum Muzeum { get; set; }
+
+        public Csucs(IMuzeum muzeum)
+        {
+            Muzeum = muzeum;
+        }
     }
 
     public class El

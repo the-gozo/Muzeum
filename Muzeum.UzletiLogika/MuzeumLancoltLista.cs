@@ -37,6 +37,11 @@ namespace Muzeum.UzletiLogika
             p.Kovetkezo = new MuzeumLancoltListaElem(muzeum, null, p);
         }
 
+        public void Torles(IMuzeum muzeum)
+        {
+            throw new NotImplementedException();
+        }
+
         public IMuzeum[] MuzeumokatTombbeRendez()
         {
             List<IMuzeum> muzeumLista = new List<IMuzeum>();
