@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErdekessegiSzint.cs" />
+    <Compile Include="Graf.cs" />
     <Compile Include="IMuzeum.cs" />
+    <Compile Include="LancoltListaBejaro.cs" />
     <Compile Include="Muzeum.cs" />
     <Compile Include="MuzeumLancoltLista.cs" />
     <Compile Include="MuzeumLancoltListaElem.cs" />

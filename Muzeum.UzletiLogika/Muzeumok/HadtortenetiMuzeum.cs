@@ -8,7 +8,7 @@ namespace Muzeum.UzletiLogika.Muzeumok
 {
    public class HadtortenetiMuzeum : Muzeum
     {
-        public HadtortenetiMuzeum() : base("Hadtörténeti múzeum")
+        public HadtortenetiMuzeum() : base("Hadtörténeti múzeum", ErdekessegiSzint.NagyonJo)
         {
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Muzeum.UzletiLogika
 {
-    public class MuzeumLancoltListaElem : IComparable
+    public class MuzeumLancoltListaElem 
     {
         public IMuzeum Muzeum { get; set; }
         public MuzeumLancoltListaElem Elozo { get; set; }
@@ -20,18 +20,6 @@ namespace Muzeum.UzletiLogika
             Muzeum = muzeum;
             Kovetkezo = kovetkezo;
             Elozo = elozo;
-        }
-
-        public int CompareTo(object obj)
-        {
-            switch (obj)
-            {
-                case MuzeumLancoltListaElem elem when elem.Muzeum.Erdekesseg < Muzeum.Erdekesseg:
-                    return 1;
-                case MuzeumLancoltListaElem elem when elem.Muzeum.Erdekesseg > Muzeum.Erdekesseg:
-                    return -1;
-                default: return 0;
-            }
         }
     }
 }

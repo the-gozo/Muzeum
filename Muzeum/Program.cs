@@ -17,17 +17,18 @@ namespace Muzeum
             var m3 = new NeprajziMuzeum();
             var m4 = new SzepmuveszetiMuzeum();
 
-            var lancoltLista = new MuzeumLancoltLista();
-            lancoltLista.BeszurasElejere(m1);
-            lancoltLista.BeszurasElejere(m2);
-            lancoltLista.BeszurasVegere(m3);
-            lancoltLista.BeszurasVegere(m4);
+            m1.HasonloMuzeumokElejereBeszur(m2);
+            m1.HasonloMuzeumokElejereBeszur(m3);
+            m1.HasonloMuzeumokElejereBeszur(m4);
 
-            foreach (var muz in lancoltLista)
+            foreach (var muz in m1.HasonloMuzeumokLancoltLista)
             {
                 Console.WriteLine(muz.ToString());
             }
 
+
+
+            var rendezettTomb = m1.HasonloMuzeumokLancoltLista.MuzeumokatTombbeRendez();
 
             Console.ReadKey();
         }

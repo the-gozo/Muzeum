@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Muzeum.UzletiLogika
 {
-    public interface IMuzeum
+    public interface IMuzeum: IComparable
     {
         int BaratokSzamaAkitErdekelAProgram { get; set; }
         ErdekessegiSzint Erdekesseg { get; set; }

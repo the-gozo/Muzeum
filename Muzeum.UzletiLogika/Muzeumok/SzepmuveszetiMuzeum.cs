@@ -8,7 +8,7 @@ namespace Muzeum.UzletiLogika.Muzeumok
 {
     public class SzepmuveszetiMuzeum: Muzeum
     {
-        public SzepmuveszetiMuzeum() : base("Szépművészeti múzeum")
+        public SzepmuveszetiMuzeum() : base("Szépművészeti múzeum", ErdekessegiSzint.EgeszJo)
         {
         }
     }

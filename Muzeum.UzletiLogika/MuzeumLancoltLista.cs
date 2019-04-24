@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Muzeum.UzletiLogika
 {
-    public class MuzeumLancoltLista: IEnumerable
+    public class MuzeumLancoltLista: IEnumerable<IMuzeum>
     {
         public MuzeumLancoltListaElem Fej { get; }
 
@@ -37,49 +37,29 @@ namespace Muzeum.UzletiLogika
             p.Kovetkezo = new MuzeumLancoltListaElem(muzeum, null, p);
         }
 
-        public IEnumerator GetEnumerator()
+        public IMuzeum[] MuzeumokatTombbeRendez()
+        {
+            List<IMuzeum> muzeumLista = new List<IMuzeum>();
+            
+            foreach (var muzeum in this)
+            {
+                muzeumLista.Add(muzeum);
+            }
+
+            muzeumLista.Sort();
+
+            return muzeumLista.ToArray();
+        }
+
+
+        public IEnumerator<IMuzeum> GetEnumerator()
         {
             return new LancoltListaBejaro(Fej);
         }
-    }
 
-    public class LancoltListaBejaro  : IEnumerator<IMuzeum>
-    {
-        MuzeumLancoltListaElem _elsoElem;
-        MuzeumLancoltListaElem _elsoElottiElem;
-
-        public LancoltListaBejaro(MuzeumLancoltListaElem elsoElem)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            _elsoElem = elsoElem;
+            return GetEnumerator();
         }
-
-        public void Dispose()
-        {
-            _elsoElem = null;
-            _elsoElottiElem = null;
-        }
-
-        public bool MoveNext()
-        {
-            if (_elsoElem == null)
-            {
-                _elsoElem = _elsoElottiElem;
-            }
-            else
-            {
-                _elsoElem = _elsoElem.Kovetkezo;
-            }
-
-            return _elsoElem != null;
-        }
-
-        public void Reset()
-        {
-            _elsoElem = null;
-        }
-
-        public IMuzeum Current { get => _elsoElem.Muzeum ; }
-
-        object IEnumerator.Current => Current;
     }
 }
