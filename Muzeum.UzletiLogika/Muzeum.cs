@@ -8,32 +8,36 @@ namespace Muzeum.UzletiLogika
 {
     public abstract class Muzeum : IMuzeum
     {
-        public string Nev { get; }
+        string _nev;
         MuzeumLancoltLista _hasonloMuzeumokLancoltLista;
         
         public int BaratokSzamaAkitErdekelAProgram { get; set; }
         public ErdekessegiSzint Erdekesseg { get; set; }
-        public MuzeumLancoltLista HasonloMuzeumokLancoltLista
-        {
-            get => _hasonloMuzeumokLancoltLista;
-            set => _hasonloMuzeumokLancoltLista = value;
-        }
         
         public Muzeum(string nev)
         {
-            Nev = nev;
+            _nev = nev;
+            _hasonloMuzeumokLancoltLista = new MuzeumLancoltLista();
         }
 
         public IMuzeum[] HasonloMuzeumok()
         {
-       
-
             throw new NotImplementedException();
+        }
+
+        public void HasonloMuzeumokElejereBeszur(IMuzeum muzeum)
+        {
+            _hasonloMuzeumokLancoltLista.BeszurasElejere(muzeum);
+        }
+
+        public void HasonloMuzeumokvegereeBeszur(IMuzeum muzeum)
+        {
+            _hasonloMuzeumokLancoltLista.BeszurasVegere(muzeum);
         }
 
         public override string ToString()
         {
-            return Nev;
+            return _nev;
         }
     }
 }
