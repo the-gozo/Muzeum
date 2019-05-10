@@ -39,13 +39,29 @@ namespace Muzeum.UzletiLogika
 
         public void Torles(IMuzeum muzeum)
         {
-            throw new NotImplementedException();
+            MuzeumLancoltListaElem p = Fej;
+
+            while (p.Kovetkezo != null && p.Muzeum != muzeum)
+            {
+                p = p.Kovetkezo;
+            }
+
+            if (p.Muzeum == muzeum)
+            {
+                p.Elozo.Kovetkezo = p.Kovetkezo;
+                p = null;
+            }
+            else
+            {
+                throw new ArgumentException("Nincs ilyen múzeum a hasonló múzeumok között");
+            }
+
         }
 
         public IMuzeum[] MuzeumokatTombbeRendez()
         {
             List<IMuzeum> muzeumLista = new List<IMuzeum>();
-            
+
             foreach (var muzeum in this)
             {
                 muzeumLista.Add(muzeum);

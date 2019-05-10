@@ -20,21 +20,7 @@ namespace Muzeum.UzletiLogika
             NagyonJoMuzeumLancoltLista = new MuzeumLancoltLista();
         }
 
-        private bool VanElKözte(Csucs honnan, Csucs hova)
-        {
-            return Elek.Any(el => el.Honnan == honnan && el.Hova == hova);
-        }
-
-        private bool VezetElIde(Csucs csucs) => Elek.Any(el => el.Hova == csucs);
-        private bool VezetElInnen(Csucs csucs) => Elek.Any(el => el.Honnan == csucs);
-
-        public IEnumerable<Csucs> Szomszedok(Csucs csucs)
-        {
-            //todo implementálni
-            return new List<Csucs>();
-        }
-
-        public void CsucsHozzaadas(Csucs csucs)
+        public void CsucsHozzaad(Csucs csucs)
         {
             if (csucs != null && !Csucsok.Contains(csucs))
             {
@@ -50,7 +36,7 @@ namespace Muzeum.UzletiLogika
             }
         }
 
-        public void CsucsTorles(Csucs csucs)
+        public void CsucsTorol(Csucs csucs)
         {
             if (csucs != null && Csucsok.Contains(csucs))
             {
@@ -68,7 +54,7 @@ namespace Muzeum.UzletiLogika
             }
         }
 
-        public void ElHozzaadas(El el)
+        public void ElHozzaad(El el)
         {
             if (!Elek.Any(e => (el.Hova == e.Hova && el.Honnan == e.Honnan) || (el.Honnan == e.Hova && el.Hova == e.Honnan)))
             {
@@ -80,7 +66,7 @@ namespace Muzeum.UzletiLogika
             }
         }
 
-        public void ElTorles(El el)
+        public void ElTorol(El el)
         {
             if (el != null && Elek.Contains(el))
             {
@@ -94,7 +80,68 @@ namespace Muzeum.UzletiLogika
 
         public void EleketFrissit(EleketFrissit deleg)
         {
-            Elek.ForEach(el => deleg(el.Honnan, el.Hova)); ;
+            var csucs1 = Csucsok[0];
+            var csucs2 = Csucsok[4];
+            deleg(csucs1, csucs2, Elek);
+        }
+
+        public Graf UtvonalGraf(Csucs honnan, Csucs hova, Csucs[] allomasok)
+        {
+            if (!VezetElInnen(honnan))
+            {
+                throw new ArgumentException("Az indulási múzeumból nem lehet máshová eljutni");
+            }
+
+            if (!VezetElIde(hova))
+            {
+                throw new ArgumentException("A cél múzeumba nem lehet eljutni, mert nincs odavezető él");
+            }
+
+            var megnezendoMuzeumok = new List<Csucs>();
+            megnezendoMuzeumok.Add(honnan);
+            megnezendoMuzeumok.AddRange(allomasok);
+            megnezendoMuzeumok.Add(hova);
+
+            bool vegcelElerheto = true;
+            var dijkstraMindenKivalasztottMuzeumhoz = new List<Dictionary<int, (Csucs csucs, float tavolsagStarttol, Csucs honnanJottem)>>();
+
+            //megnézzük, hogy minden kiválasztott múzeumból elérhető-e a sorban következő
+            for (int i = 0; i <= megnezendoMuzeumok.Count-2 && vegcelElerheto; i++)
+            {
+                var aktualis = megnezendoMuzeumok[i];
+                var kovetkezo = megnezendoMuzeumok[i+1];
+
+                var dijkstraAktualisMuzeumhoz = DijkstraElemek(aktualis);
+                dijkstraMindenKivalasztottMuzeumhoz.Add(dijkstraAktualisMuzeumhoz);
+                vegcelElerheto = dijkstraAktualisMuzeumhoz.Any(rekord => rekord.Value.csucs == kovetkezo && rekord.Value.honnanJottem!=null);
+                if (i == megnezendoMuzeumok.Count - 2)
+                {
+                    dijkstraMindenKivalasztottMuzeumhoz.Add(DijkstraElemek(kovetkezo));
+                }
+            }
+
+            if (vegcelElerheto)
+            {
+                var graf = new Graf();
+
+                List<Csucs> csucsok = new List<Csucs>();
+                List<El> elek = new List<El>();
+
+                for (int i = 0; i <= megnezendoMuzeumok.Count - 2; i++)
+                {
+                    var visszafejtes = UtatVisszafejt(megnezendoMuzeumok[i + 1], megnezendoMuzeumok[i]);
+                    csucsok.AddRange(visszafejtes.csucsok);
+                    elek.AddRange(visszafejtes.elek);
+                }
+
+                graf.Csucsok.AddRange(csucsok.Distinct());
+                graf.Elek.AddRange(elek.Distinct());
+
+                return graf; 
+            }
+
+            throw new ArgumentException("A megadott útvonalon nem lehet eljutni a célba");
+
         }
 
         private Dictionary<int, (Csucs csucs, float tavolsagStarttol, Csucs honnanJottem)> DijkstraElemek(Csucs start)
@@ -122,7 +169,7 @@ namespace Muzeum.UzletiLogika
 
                 csucsPrioritasosSor.Remove(kivalasztottLegkisebb.csucs.GetHashCode());
 
-                var szomszedok = Csucsok.Where(csucs => Elek.Any(el => VanElKözte(kivalasztottLegkisebb.csucs, csucs))).ToList();
+                var szomszedok = Csucsok.Where(csucs => Elek.Any(el => GetEl(kivalasztottLegkisebb.csucs, csucs) != null)).ToList();
 
                 foreach (var szomszedCsucs in szomszedok)
                 {
@@ -146,42 +193,33 @@ namespace Muzeum.UzletiLogika
             return dijkstraAdatszerkezet;
         }
 
-        public Graf UtatSzamol(Csucs honnan, Csucs hova, Csucs[] allomasok)
+        private (List<Csucs> csucsok, List<El> elek)  UtatVisszafejt(Csucs vegpont, Csucs kezdopont)
         {
-            if (!VezetElInnen(honnan))
+            var dijkstra = DijkstraElemek(kezdopont);
+            var cel = dijkstra.SingleOrDefault(rekord => rekord.Value.csucs == vegpont);
+
+            var csucsok = new List<Csucs>();
+            var elek = new List<El>();
+
+            while (cel.Value.honnanJottem!=null)
             {
-                throw new ArgumentException("Az indulási múzeumból nem lehet máshová eljutni");
+                csucsok.Add(cel.Value.csucs);
+                cel = dijkstra.SingleOrDefault(rekord => rekord.Value.csucs == cel.Value.honnanJottem);
             }
 
-            if (!VezetElIde(hova))
+            csucsok.Add(dijkstra.SingleOrDefault(rekord => rekord.Value.tavolsagStarttol == 0).Value.csucs);
+            csucsok.Reverse();
+            for (int i = 0; i <= csucsok.Count-2; i++)
             {
-                throw new ArgumentException("A cél múzeumba nem lehet eljutni, mert nincs odavezető él");
+                elek.Add(Elek.SingleOrDefault(el => el.Honnan == csucsok[i] && el.Hova == csucsok[i + 1]));
             }
 
-            var muzeumLista = new List<Csucs>();
-            muzeumLista.Add(honnan);
-            muzeumLista.AddRange(allomasok);
-            muzeumLista.Add(hova);
-
-            bool allomasokBenneVannak = true;
-
-            for (int i = 0; i <= muzeumLista.Count-2 && allomasokBenneVannak; i++)
-            {
-                var dijs = DijkstraElemek(muzeumLista[i]);
-                allomasokBenneVannak = dijs.Any(rek => rek.Value.csucs == muzeumLista[i + 1] && rek.Value.honnanJottem!=null);
-            }
-
-            if (allomasokBenneVannak)
-            {
-                var graf = new Graf();
-                graf.Csucsok.AddRange(muzeumLista);
-                //graf.Elek.AddRange(/*Elek.Where()*/)
-                return graf; 
-            }
-
-            throw new ArgumentException("A megadott útvonalon nem lehet eljutni a célba");
-
+            return (csucsok, elek);
         }
+
+        private bool VezetElIde(Csucs csucs) => Elek.Any(el => el.Hova == csucs);
+
+        private bool VezetElInnen(Csucs csucs) => Elek.Any(el => el.Honnan == csucs);
 
         private El GetEl(Csucs honnan, Csucs hova)
         {
@@ -189,30 +227,5 @@ namespace Muzeum.UzletiLogika
         }
     }
 
-    public delegate void EleketFrissit(Csucs honnan, Csucs hova);
-
-    public class Csucs
-    {
-        public IMuzeum Muzeum { get; set; }
-
-        public Csucs(IMuzeum muzeum)
-        {
-            Muzeum = muzeum;
-        }
-    }
-
-    public class El
-    {
-        public Csucs Honnan { get; set; }
-        public Csucs Hova { get; set; }
-        public float Tavolsag { get; set; }
-
-        public El(Csucs honnan, Csucs hova, float tavolsag)
-        {
-            Honnan = honnan;
-            Hova = hova;
-            Tavolsag = tavolsag;
-        }
-
-    }
+    public delegate float EleketFrissit(Csucs honnan, Csucs hova, List<El> elek);
 }

@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Csucs.cs" />
+    <Compile Include="El.cs" />
     <Compile Include="ErdekessegiSzint.cs" />
     <Compile Include="Graf.cs" />
     <Compile Include="IMuzeum.cs" />

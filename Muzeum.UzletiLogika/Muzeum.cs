@@ -24,6 +24,7 @@ namespace Muzeum.UzletiLogika
             get => _erdekessegiSzint; 
             set=> _erdekessegiSzint = value;
         }
+
         public MuzeumLancoltLista HasonloMuzeumokLancoltLista
         {
             get => _hasonloMuzeumokLancoltLista;
@@ -38,7 +39,7 @@ namespace Muzeum.UzletiLogika
 
         public IMuzeum[] HasonloMuzeumok()
         {
-            throw new NotImplementedException();
+            return HasonloMuzeumokLancoltLista.MuzeumokatTombbeRendez();
         }
 
         public void HasonloMuzeumokElejereBeszur(IMuzeum muzeum)
@@ -49,6 +50,11 @@ namespace Muzeum.UzletiLogika
         public void HasonloMuzeumokvegereeBeszur(IMuzeum muzeum)
         {
             _hasonloMuzeumokLancoltLista.BeszurasVegere(muzeum);
+        }
+
+        public void HasonloMuzeumTorol(IMuzeum muzeum)
+        {
+            HasonloMuzeumokLancoltLista.Torles(muzeum);
         }
 
         public override string ToString()
