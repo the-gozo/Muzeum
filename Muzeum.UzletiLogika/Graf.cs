@@ -26,26 +26,6 @@ namespace Muzeum.UzletiLogika
         }
 
         private bool VezetElIde(Csucs csucs) => Elek.Any(el => el.Hova == csucs);
-        private bool VezetElIde(Csucs ide, Csucs innen, Dictionary<int, (Csucs csucs, float tavolsagStarttol, Csucs honnanJottem)> dijkstra)
-        {
-            bool vezetel = false;
-
-            var innenRekord = dijkstra[innen.GetHashCode()];
-
-            if (innenRekord.honnanJottem!=null)
-            {
-                if (innenRekord.honnanJottem == ide)
-                {
-                    vezetel = true;
-                }
-                else
-                {
-                    vezetel = VezetElIde(ide, innenRekord.honnanJottem, dijkstra);
-                }
-            }
-
-            return vezetel;
-        }
         private bool VezetElInnen(Csucs csucs) => Elek.Any(el => el.Honnan == csucs);
 
         public IEnumerable<Csucs> Szomszedok(Csucs csucs)
@@ -178,15 +158,25 @@ namespace Muzeum.UzletiLogika
                 throw new ArgumentException("A cél múzeumba nem lehet eljutni, mert nincs odavezető él");
             }
 
-            var dijsktraKEzdo = DijkstraElemek(honnan);
+            var muzeumLista = new List<Csucs>();
+            muzeumLista.Add(honnan);
+            muzeumLista.AddRange(allomasok);
+            muzeumLista.Add(hova);
 
-            var honnanBenneVan = dijsktraKEzdo.Any(rekord => rekord.Value.csucs == honnan);
-            var hovaBenneVan = dijsktraKEzdo.Any(rekord => rekord.Value.csucs == hova);
-            var allomasokBenneVannak = allomasok.All(allomas => VezetElIde(allomas, hova, dijsktraKEzdo));
+            bool allomasokBenneVannak = true;
 
-            if (honnanBenneVan && hovaBenneVan && allomasokBenneVannak)
+            for (int i = 0; i <= muzeumLista.Count-2 && allomasokBenneVannak; i++)
             {
-                return new Graf();
+                var dijs = DijkstraElemek(muzeumLista[i]);
+                allomasokBenneVannak = dijs.Any(rek => rek.Value.csucs == muzeumLista[i + 1] && rek.Value.honnanJottem!=null);
+            }
+
+            if (allomasokBenneVannak)
+            {
+                var graf = new Graf();
+                graf.Csucsok.AddRange(muzeumLista);
+                //graf.Elek.AddRange(/*Elek.Where()*/)
+                return graf; 
             }
 
             throw new ArgumentException("A megadott útvonalon nem lehet eljutni a célba");

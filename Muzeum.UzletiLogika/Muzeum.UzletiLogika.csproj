@@ -48,6 +48,7 @@
     <Compile Include="Muzeum.cs" />
     <Compile Include="MuzeumLancoltLista.cs" />
     <Compile Include="MuzeumLancoltListaElem.cs" />
+    <Compile Include="Muzeumok\Babamuzeum.cs" />
     <Compile Include="Muzeumok\HadtortenetiMuzeum.cs" />
     <Compile Include="Muzeumok\IparmuveszetiMuzeum.cs" />
     <Compile Include="Muzeumok\NeprajziMuzeum.cs" />

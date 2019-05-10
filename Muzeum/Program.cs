@@ -24,6 +24,9 @@ namespace Muzeum
             var m4 = new SzepmuveszetiMuzeum();
             var csucs4 = new Csucs(m4);
 
+            var m5 = new Babamuzeum();
+            var csucs5 = new Csucs(m5);
+
 
 
             var graf = new Graf();
@@ -31,6 +34,7 @@ namespace Muzeum
             graf.CsucsHozzaadas(csucs2);
             graf.CsucsHozzaadas(csucs3);
             graf.CsucsHozzaadas(csucs4);
+            graf.CsucsHozzaadas(csucs5);
 
             var el1_2 = new El(csucs1, csucs2, 1);
             var el1_3 = new El(csucs1, csucs3, 4);
@@ -41,16 +45,20 @@ namespace Muzeum
 
             var el3_4 = new El(csucs3, csucs4, 1);
 
+            var el4_5 = new El(csucs4, csucs5, 1);
 
-            //graf.ElHozzaadas(el1_2);
+
+
+            graf.ElHozzaadas(el1_2);
             graf.ElHozzaadas(el1_3);
-            graf.ElHozzaadas(el1_4);
+            //graf.ElHozzaadas(el1_4);
             graf.ElHozzaadas(el2_3);
-            graf.ElHozzaadas(el2_4);
-            graf.ElHozzaadas(el3_4);
+            //graf.ElHozzaadas(el2_4);
+            //graf.ElHozzaadas(el3_4);
+            graf.ElHozzaadas(el4_5);
 
 
-            var dij = graf.UtatSzamol(csucs1, csucs4, new[]{csucs2});
+            var dij = graf.UtatSzamol(csucs1, csucs5, new[]{csucs2});
 
             Console.ReadKey();
 
